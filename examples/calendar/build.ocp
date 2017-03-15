@@ -1,8 +1,0 @@
-binannot = false
-
-(* enabled = false *)
-
-begin program "calendar"
-  requires = [ "wxOCaml"  "wxSamples-resources"  ]
-  files = [    "calendar.ml"  ]
-end

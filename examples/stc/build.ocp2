@@ -1,0 +1,11 @@
+ocaml.binannot = false;
+
+if( autoconf.conf_wxhas_include_stc = "1" ) {
+
+OCaml.program( "stc", ocaml + {
+  requires = [ "wxOCaml" ; "wxSamples-resources"  ];
+  files = [    "stc.ml"  ];
+});
+
+}
+

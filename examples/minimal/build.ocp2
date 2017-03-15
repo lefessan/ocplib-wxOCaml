@@ -1,0 +1,6 @@
+ocaml.binannot = false;
+
+OCaml.program( "minimal", ocaml + {
+  requires = [ "wxOCaml"; "wxSamples-resources" ];
+  files = [    "minimal.ml"  ]
+});

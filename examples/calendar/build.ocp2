@@ -1,0 +1,6 @@
+ocaml.binannot = false;
+
+OCaml.program ( "calendar", ocaml + {
+  requires = [ "wxOCaml" ; "wxSamples-resources"  ];
+  files = [    "calendar.ml"  ];
+  });

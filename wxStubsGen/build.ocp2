@@ -1,0 +1,55 @@
+(*******************************************************************)
+(*                                                                 *)
+(*                            wxOCaml                              *)
+(*                                                                 *)
+(*                       Fabrice LE FESSANT                        *)
+(*                                                                 *)
+(*                 Copyright 2013, INRIA/OCamlPro.                 *)
+(*            Licence LGPL v3.0 with linking exception.            *)
+(*                                                                 *)
+(*******************************************************************)
+
+OCaml.program( "wxStubsGen",
+               ocaml +
+               {
+      files = [
+               "genVersion.ml", { ocp2ml = true;
+                                  env_strings = [ "wx_version" ] };
+
+               "genMisc.ml";
+               "genTypes.ml";
+               "genGlobals.ml";
+
+               "genLexer.mll";
+               "genParser.mly";
+
+               "genProject.ml";
+               "genCplusplus.ml";
+               "genOCaml.ml";
+               "genEvents.ml";
+               
+               "genMain.ml"
+               ];
+
+      requires = [ "unix"; "wxConfig";
+                   "wxWidgets_ml_dir";  "wxWidgets_cpp_dir" ];
+
+      build_rules =
+          OCaml.make(
+                     [
+                      SRCDIR("wxWidgets_ml_dir","build.ocp2gen");
+                      "%{wxWidgets_cpp_dir_FULL_SRC_DIR}%/build.ocp2gen";
+                      ],
+                     [
+                      "%{wxStubsGen_FULL_DST_DIR}%/wxStubsGen.asm" + exe_ext
+                      ],
+                     [
+                      [ "%{wxStubsGen_FULL_DST_DIR}%/wxStubsGen.asm";
+                        "-api"; "../api";
+                        "-cpp"; "../wxWidgets_cpp";
+                        "-ocaml"; "../wxWidgets_ml";
+                        ]
+                      ])
+          });
+
+

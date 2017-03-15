@@ -1,0 +1,6 @@
+ocaml.binannot = false;
+
+OCaml. program ( "dataview", ocaml + {
+  requires = [ "wxOCaml" ; "wxSamples-resources"  ];
+  files = [    "dataview.ml"  ];
+  });

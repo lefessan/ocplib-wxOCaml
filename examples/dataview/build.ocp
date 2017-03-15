@@ -1,8 +1,0 @@
-binannot = false
-
-(* enabled = false *)
-
-begin program "dataview"
-  requires = [ "wxOCaml"  "wxSamples-resources"  ]
-  files = [    "dataview.ml"  ]
-end

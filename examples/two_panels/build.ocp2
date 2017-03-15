@@ -1,0 +1,8 @@
+
+ocaml.binannot = false;
+
+OCaml.program("two_panels",
+ocaml + {
+  requires = [ "wxOCaml"; "wxSamples-resources" ];
+  files = [    "two_panels.ml"  ];
+  });

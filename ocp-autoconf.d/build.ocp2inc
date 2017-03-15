@@ -1,0 +1,47 @@
+(*******************************************************************)
+(*                                                                 *)
+(*                            wxOCaml                              *)
+(*                                                                 *)
+(*                       Fabrice LE FESSANT                        *)
+(*                                                                 *)
+(*                 Copyright 2013, INRIA/OCamlPro.                 *)
+(*            Licence LGPL v3.0 with linking exception.            *)
+(*                                                                 *)
+(*******************************************************************)
+
+String = module("ocp-build:String", "1.0");
+OCaml = module("ocp-build:OCaml", "1.0");
+List = module("ocp-build:List", "1.0");
+
+exe_ext = "";
+obj_ext = ".o";
+lib_ext = ".a";
+
+binannot = false;
+
+ocaml.wx_version = autoconf.conf_wx_version;
+cxx = autoconf.conf_cxx;
+cppflags = autoconf.conf_cppflags;
+ocamllib = autoconf.conf_ocamllib;
+cxxflags = autoconf.conf_cxxflags;
+libs = autoconf.conf_libs;
+
+cxx = [ cxx;  "-std=c++11" ];
+cppflags = String.split_simplify( cppflags, " " ) +
+  ["-I"; ocamllib; "-I"; "../wxConfig"; "-g"; "-fPIC" ];
+cxxflags = String.split_simplify( cxxflags, " " );
+cxxlibs = String.split_simplify( libs, " " );
+
+function link_with_wxOCaml(ocaml){
+  ocaml.custom = true;
+  ocaml.bytelink = [ "-custom" ];
+  link = [ "-cclib"; "-lwxOCaml_api"; "-cclib"; libs;
+       "-cclib"; "-lstdc++"; "-cclib"; "-L wxWidgets_cpp" ];
+  ocaml.asmlink = link;
+  ocaml.bytelink += link;
+  return ocaml;
+}
+
+function compile_c_with_wxWidget(ocaml){
+  return ocaml + { ccopt = cxxflags + cppflags };
+}

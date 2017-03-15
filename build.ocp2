@@ -1,0 +1,21 @@
+(*******************************************************************)
+(*                                                                 *)
+(*                            wxOCaml                              *)
+(*                                                                 *)
+(*                       Fabrice LE FESSANT                        *)
+(*                                                                 *)
+(*                 Copyright 2013, INRIA/OCamlPro.                 *)
+(*            Licence LGPL v3.0 with linking exception.            *)
+(*                                                                 *)
+(*******************************************************************)
+
+include "autoconf/config.ocp2gen" else {
+  message("You must run ./configure");
+  exit(2);
+}
+
+Sys = module("ocp-build:Sys", "1.0");
+
+ocaml.version = autoconf.package_version;
+filename_ocp2 = "ocp-autoconf.d/build.ocp2inc";
+if( Sys.file_exists(filename_ocp2) ){ include filename_ocp2; }

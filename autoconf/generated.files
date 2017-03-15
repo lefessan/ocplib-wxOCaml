@@ -1,0 +1,16 @@
+autoconf/.gitignore 00973f185af428536c3caff11a53626d
+autoconf/Makefile.config.in 2a023a54e9007ef7e5b48fcf9211afcd
+autoconf/Makefile.rules c9e85dee44380b1a855cb2d49da44d54
+autoconf/build.ocp 9d81103f0dd977b6414645b9ab29c713
+autoconf/config.ocp2gen.in e5fbb0c9e509e2fa44f9eaefa8087c19
+autoconf/config.ocpgen.in 4013c6b684cbecc8d68ddcba665b454f
+autoconf/configure.ac 2719a7d6b8f33f3b51abc1ffa87b1be2
+autoconf/m4/ax_compare_version.m4 ebb455a7fd6a8ba9a4e38a25c8f0b686
+autoconf/m4/ocaml.m4 bffe7da970a9e23a89b611c00360f36f
+autoconf/m4/wxwin.m4 0bc245fe1985e8c468b1f039a8327f2f
+autoconf/ocaml-config.h.in 361f7d5a23b30c6c49756a9e34c2dcf9
+autoconf/travis-ci.sh e22cfae9156c383ce5a4abf646798a17
+autoconf/travis-install.sh 9bfd3722ac873da3f33d69fd670659b2
+build.ocp2 1e8c5c999be6aa80323779226d7c7f1a
+opam df6a0183248ad7dbc9a2c612a17784b4
+push-opam.sh 7b186ad07579199db36fa1cefb6496a8

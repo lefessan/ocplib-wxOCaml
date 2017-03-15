@@ -1,0 +1,37 @@
+
+OCaml = module("ocp-build:OCaml", "1.0");
+
+include "build.ocp2gen" else {
+    GENERATED_OCAML_SOURCES = [];
+}
+
+OCaml.rules("wxWidgets_ml_dir",{} );
+
+libwxOCaml_api_src_a = "%{libwxOCaml_api_FULL_SRC_DIR}%/libwxOCaml_api" + lib_ext;
+libwxOCaml_api_dst_a = "%{wxOCaml_FULL_DST_DIR}%/libwxOCaml_api" + lib_ext;
+
+OCaml.library("wxOCaml", 
+  link_with_wxOCaml(ocaml + {
+    sort = true;
+    
+    cmxs_plugin = false;
+    
+    files = [
+           "wxVersion.ml", { ocp2ml=true;
+                             env_strings = [ "wx_version" ] };
+           "wxID.ml"
+           ] +
+      GENERATED_OCAML_SOURCES
+      + [ "wxWidgets.ml" ];
+  
+  link_deps = [ libwxOCaml_api_dst_a ];
+  requires = [ "wxConfig"; "libwxOCaml_api" ];
+  build_rules =
+      OCaml.make(
+                 [libwxOCaml_api_dst_a],
+                 [ libwxOCaml_api_src_a ],
+                 [
+                  ["cp"; libwxOCaml_api_src_a; libwxOCaml_api_dst_a]
+                  ]
+                 );
+      }));

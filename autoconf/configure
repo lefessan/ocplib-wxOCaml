@@ -625,6 +625,10 @@ LIBOBJS
 OCAML_USE_BINANNOT
 wxHAS_INCLUDE_STC
 wxHAS_INCLUDE_WRAPSIZER
+DOWNLOAD_URL_PREFIX
+OPAM_REPO_FORK_REMOTE
+OPAM_REPO_OFFICIAL_REMOTE
+OPAM_REPO
 ROOTDIR
 EGREP
 GREP
@@ -4133,6 +4137,10 @@ if test "$OCAMLC" = "no"; then
    as_fn_error $? "You must install the OCaml compiler" "$LINENO" 5
 fi
 
+if test "${OCAMLVERSION}" = ""; then
+   as_fn_error $? "No OCaml version. ocamlc -version is not parsable." "$LINENO" 5
+fi
+
 if test "$VERSION_CHECK" = "yes" ; then
   for ac_prog in gawk mawk nawk awk
 do
@@ -4502,6 +4510,17 @@ fi
 if test "$OCAML_TOOL_ocp_build" = "no"; then
    as_fn_error $? "Please install OCaml tool 'ocp-build'." "$LINENO" 5
 fi
+OPAM_REPO=/home/lefessan/WindowsSharedFolder/opam-repository-with-archives
+OPAM_REPO_OFFICIAL_REMOTE=ocaml
+OPAM_REPO_FORK_REMOTE=origin
+DOWNLOAD_URL_PREFIX=http://github.com/OCamlPro/ocplib-wxOCaml/archive/
+
+###############################################################
+##                                                            #
+## From autoconf.ac:                                          #
+##                                                            #
+###############################################################
+
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -5896,6 +5915,11 @@ echo WxWidgets version: ${WX_VERSION}
 echo wxHAS_INCLUDE_STC ${wxHAS_INCLUDE_STC}
 echo wxHAS_INCLUDE_WRAPSIZER ${wxHAS_INCLUDE_WRAPSIZER}
 
+###############################################################
+##                                                            #
+## END of autoconf.ac                                         #
+##                                                            #
+###############################################################
 
 
 
@@ -5927,7 +5951,13 @@ echo wxHAS_INCLUDE_WRAPSIZER ${wxHAS_INCLUDE_WRAPSIZER}
 
 
 
-ac_config_files="$ac_config_files Makefile.config config.ocpgen ocaml-config.h ../wxConfig/wxOCamlConfig.h"
+
+
+
+
+
+
+ac_config_files="$ac_config_files Makefile.config config.ocpgen config.ocp2gen ocaml-config.h ../wxConfig/wxOCamlConfig.h"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -6637,6 +6667,7 @@ do
   case $ac_config_target in
     "Makefile.config") CONFIG_FILES="$CONFIG_FILES Makefile.config" ;;
     "config.ocpgen") CONFIG_FILES="$CONFIG_FILES config.ocpgen" ;;
+    "config.ocp2gen") CONFIG_FILES="$CONFIG_FILES config.ocp2gen" ;;
     "ocaml-config.h") CONFIG_FILES="$CONFIG_FILES ocaml-config.h" ;;
     "../wxConfig/wxOCamlConfig.h") CONFIG_FILES="$CONFIG_FILES ../wxConfig/wxOCamlConfig.h" ;;
 

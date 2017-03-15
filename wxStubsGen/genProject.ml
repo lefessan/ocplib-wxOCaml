@@ -30,13 +30,13 @@ let add_cplusplus_header basename =
 
 let generate_project_files (cpp_dirname, ml_dirname) =
 
-  let ocp_oc = open_out (Filename.concat ml_dirname "build.ocpgen") in
+  let ocp_oc = open_out (Filename.concat ml_dirname "build.ocp2gen") in
 
   Printf.fprintf ocp_oc.oc "GENERATED_OCAML_SOURCES = [\n";
   List.iter (fun file ->
-    Printf.fprintf ocp_oc.oc "  %S\n" file
+    Printf.fprintf ocp_oc.oc "  %S;\n" file
   ) !generated_ocaml_sources;
-  Printf.fprintf ocp_oc.oc "  ]\n";
+  Printf.fprintf ocp_oc.oc "  ];\n";
   close_out ocp_oc;
 
 
@@ -54,17 +54,17 @@ let generate_project_files (cpp_dirname, ml_dirname) =
   close_out ocp_oc;
 
 
-  let ocp_oc = open_out (Filename.concat cpp_dirname "build.ocpgen") in
+  let ocp_oc = open_out (Filename.concat cpp_dirname "build.ocp2gen") in
   fprintf ocp_oc "GENERATED_CPP_SOURCES = [\n";
   List.iter (fun file ->
-    fprintf ocp_oc "    %S  \n" file
+    fprintf ocp_oc "    %S;  \n" file
   ) !generated_cplusplus_sources;
-  fprintf ocp_oc "]\n";
+  fprintf ocp_oc "];\n";
   fprintf ocp_oc "GENERATED_CPP_HEADERS = [\n";
   List.iter (fun file ->
-    fprintf ocp_oc "    %S  \n" file
+    fprintf ocp_oc "    %S;  \n" file
   ) !generated_cplusplus_headers;
-  fprintf ocp_oc "]\n";
+  fprintf ocp_oc "];\n";
   close_out ocp_oc;
 
   let ocp_oc = open_out (Filename.concat ml_dirname "Makefile.project") in
@@ -86,7 +86,7 @@ let generate_project_files (cpp_dirname, ml_dirname) =
         [
           "Makefile.project";
           "wxOCamlConfig.h";
-          "build.ocpgen";
+          "build.ocp2gen";
           ".gitignore"
         ]);
     close_out ocp_oc;
@@ -99,7 +99,7 @@ let generate_project_files (cpp_dirname, ml_dirname) =
           "wxEVT.ml";
           "wxDefs.ml";
           "Makefile.project";
-          "build.ocpgen";
+          "build.ocp2gen";
           ".gitignore"
         ]);
     close_out ocp_oc;

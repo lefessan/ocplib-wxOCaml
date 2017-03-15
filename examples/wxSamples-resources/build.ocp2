@@ -1,0 +1,34 @@
+
+files = [
+         "sample_xpm.ml";
+         "smile_xpm.ml";
+         "wiztest_xpm.ml";
+         "wiztest2_xpm.ml"
+         ];
+
+
+xpm_rule = OCaml.rule(
+                      [ "%{basename}%.xpm";
+                        "%{xpm2ml_FULL_DST_DIR}%/xpm2ml.asm" + exe_ext ],
+                      [
+                       OCaml.system(
+                                    [
+                                     "%{xpm2ml_FULL_DST_DIR}%/xpm2ml.asm";
+                                     "%{basename}%.xpm";
+                                     "%{basename}%";
+                                     "%{basename}%.ml";
+                                     ] + cxx
+                                    )
+                       ]
+                      );
+
+OCaml.library("wxSamples-resources",
+              ocaml + {
+                  files = files;
+                  requires = [ "xpm2ml" ];
+                  build_rules =
+                      List.map(
+                               function(file){ return (file, xpm_rule); },
+                               files)
+                      });
+

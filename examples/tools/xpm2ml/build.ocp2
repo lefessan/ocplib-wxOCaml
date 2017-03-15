@@ -1,0 +1,4 @@
+
+OCaml.program( "xpm2ml", ocaml + {
+  files = [ "xpm2ml.ml" ]
+  });

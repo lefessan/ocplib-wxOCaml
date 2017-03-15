@@ -1,0 +1,115 @@
+(*******************************************************************)
+(*                                                                 *)
+(*                            wxOCaml                              *)
+(*                                                                 *)
+(*                       Fabrice LE FESSANT                        *)
+(*                                                                 *)
+(*                 Copyright 2013, INRIA/OCamlPro.                 *)
+(*            Licence LGPL v3.0 with linking exception.            *)
+(*                                                                 *)
+(*******************************************************************)
+
+if( system = "win32" || system = "win64" ) {
+    exe_ext = ".exe";
+} else {
+    exe_ext = "";
+}
+
+(* This "rules" package is just there to be able to reference this
+   directory symbolically from other directories. *)
+OCaml.rules("wxConfig_dir",{});
+
+OCaml.program("genWxConfig", ocaml + { files = [ "genWxConfig.ml" ] });
+
+
+
+genWxUSE_exe = "%{wxConfig_FULL_DST_DIR}%/genWxUSE" + exe_ext;
+genWxHAS_exe = "%{wxConfig_FULL_DST_DIR}%/genWxHAS" + exe_ext;
+genWxDefs_exe = "%{wxConfig_FULL_DST_DIR}%/genWxDefs" + exe_ext;
+
+wxConfig_ocaml = ocaml +    
+{
+    files = [ "wxUSE.ml"; "wxHAS.ml"; "wxDefs.ml" ];
+    requires = [ "wxWidgets_cpp_dir"; "api_dir"; "genWxConfig" ];
+
+    build_rules =
+    OCaml.make(
+               [genWxUSE_exe],
+               [
+                "genWxUSE.cpp";
+                "wxOCaml.h";
+                "wxOCamlConfig.h"
+                ], [
+                    cxx + cxxflags + cppflags +
+                    [ "-o"; "%{wxConfig_FULL_DST_DIR}%/genWxUSE";
+                      "genWxUSE.cpp" ] + cxxlibs
+                    ]
+               )
+    +
+    OCaml.make(
+               ["wxUSE.ml"],
+               [ genWxUSE_exe ],
+               [
+                [ genWxUSE_exe ], { stdout = "wxUSE.ml" }
+                ]
+               )
+    +
+    OCaml.make(
+               [ "genWxUSE.cpp"; "genWxHAS.cpp" ],
+               [
+                "%{api_dir_FULL_SRC_DIR}%/wxUSE.dsc";
+                "%{api_dir_FULL_SRC_DIR}%/wxHAS.dsc";
+                "%{genWxConfig_FULL_DST_DIR}%/genWxConfig.asm" + exe_ext;
+                ],
+               [
+                ["%{genWxConfig_FULL_DST_DIR}%/genWxConfig.asm"]
+                ]
+               )
+    +
+    OCaml.make(
+               [ genWxHAS_exe ],
+               [
+                "genWxHAS.cpp";
+                "wxOCaml.h";
+                "wxOCamlConfig.h";
+                ],
+               [
+                cxx + cxxflags + cppflags +
+                [ "-o"; "%{wxConfig_FULL_DST_DIR}%/genWxHAS";
+                  "genWxHAS.cpp" ] + cxxlibs 
+                ]
+               )
+    +
+    OCaml.make(
+               ["wxHAS.ml"],
+               [ genWxHAS_exe ],
+               [
+                [ "%{wxConfig_FULL_DST_DIR}%/genWxHAS" ], {stdout = "wxHAS.ml"}
+                ]
+               )
+    +
+    OCaml.make(
+               ["wxDefs.ml"],
+               [ genWxDefs_exe ],
+               [
+                [ "%{wxConfig_FULL_DST_DIR}%/genWxDefs"], {stdout="wxDefs.ml"}
+                ]
+               )
+    +
+    OCaml.make(
+               [genWxDefs_exe],
+               [
+                "genWxDefs.cpp";
+                "wxOCaml.h";
+                "%{api_dir_FULL_SRC_DIR}%/wxDefs.dsc";
+                ],
+               [
+                cxx + cxxflags + cppflags +
+                [ "-o"; "%{wxConfig_FULL_DST_DIR}%/genWxDefs";
+                  "genWxDefs.cpp" ] + cxxlibs
+                ]
+               )
+
+};    
+
+OCaml.library("wxConfig", wxConfig_ocaml);

@@ -1,0 +1,8 @@
+ocaml.binannot = false;
+
+
+OCaml.program( "wizard",
+               ocaml + {
+  requires = [ "wxOCaml";  "wxSamples-resources"  ];
+  files = [    "wizard.ml"  ];
+});

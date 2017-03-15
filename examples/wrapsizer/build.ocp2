@@ -1,0 +1,9 @@
+ocaml.binannot = false;
+
+if( autoconf.conf_wxhas_include_wrapsizer = "1" ) {
+ OCaml.program("wrapsizer",
+ ocaml + {
+  requires = [ "wxOCaml";  "wxSamples-resources"  ];
+  files = [    "wrapsizer.ml"  ];
+  });
+}

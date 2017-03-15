@@ -39,7 +39,7 @@ all:
 
 clean:
 	rm -f *.so *.o *~ generated $(GENERATED_CPP_SOURCES) \
-           lib$(NAME).a build.ocpgen \
+           lib$(NAME).a build.ocp2gen \
            Makefile.project wxClasses.h 
 
 test: hello.cpp

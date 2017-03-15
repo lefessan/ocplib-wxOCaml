@@ -1,0 +1,6 @@
+ocaml.binannot = false;
+
+OCaml.program( "keyboard", ocaml + {
+  requires = [ "wxOCaml";  "wxSamples-resources"  ];
+  files = [    "keyboard.ml"  ]
+  });

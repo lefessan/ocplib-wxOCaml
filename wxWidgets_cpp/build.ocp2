@@ -1,0 +1,57 @@
+
+OCaml.rules("wxWidgets_cpp_dir", {});
+
+include "build.ocp2gen" else {
+      GENERATED_CPP_SOURCES = [];
+    } 
+
+SOURCES = GENERATED_CPP_SOURCES + [ "wxOCaml.cpp" ];
+OBJECTS = String.subst_suffix(SOURCES,".cpp", obj_ext);
+
+libwxOCaml_api_a = "libwxOCaml_api" + lib_ext;
+
+if ( system = "win32" || system = "win64" ) {
+    link_commands = [
+                     [ "link"; "/lib" ] + linkflags +
+                     [ "/out:" + libwxOCaml_api_a ] + OBJECTS
+                     ];
+} else {
+    link_commands = [
+                     [ "ar"; "rc"; libwxOCaml_api_a ] + OBJECTS;
+                     [ "ranlib"; libwxOCaml_api_a ]
+                     ];
+}
+
+cpp_rule = OCaml.rule(
+                     [ "%{basename}%.cpp";
+                       SRCDIR("wxConfig_dir","wxOCaml.h");
+                       SRCDIR("wxConfig_dir","wxOCamlConfig.h");
+                       ],
+                     [
+                      OCaml.system(
+                                   cxx + cxxflags + cppflags +
+                                   [ "-c"; "%{basename}%.cpp" ]
+                                   )
+                      ]
+                     );
+
+OCaml.rules
+    (
+     "libwxOCaml_api",
+     {
+         requires = [ "wxConfig_dir" ];
+         build_rules =
+
+             (* This rule is special: it must be executed for each target,
+              so we don't use OCaml.make() that would create a shared rule. *)
+             List.map(function(obj){ return (obj,cpp_rule); }, OBJECTS)
+             +
+             OCaml.make(
+                        [libwxOCaml_api_a],
+                        OBJECTS,
+                        link_commands
+                        )
+
+             }
+     );
+
